@@ -16,5 +16,8 @@
     "url": "https://github.com/AitezazAhmed/Backend/issues"
   },
   "homepage": "https://github.com/AitezazAhmed/Backend#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cat-me": "^1.0.3"
+  }
 }
