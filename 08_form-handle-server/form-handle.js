@@ -26,6 +26,7 @@ app.get('/contact', (req, res) => {
     res.send("Contact page")
 })
 
+
 app.get('/profile', (req, res) => {
     res.send("Profile page")
 })
