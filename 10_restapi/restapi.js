@@ -6,6 +6,8 @@ const users = require("./MOCK_DATA.json");
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -30,9 +32,6 @@ app.route("/api/users/:id").get((req, res) => {
 app.get("/users", (req, res) => {
     return res.json(users);
 });
-app.post("/api/users",(req,res)=>{
-    return res.json({staus:"panding"})
-})
 
 // Get user by ID
 // app.get("/api/users/:id", (req, res) => {
