@@ -1,4 +1,6 @@
 const userModel = require("../models/user");
+const {v4: uuidv4}=require("uuid")
+const {setUser}=require("../service/auth")
 const userhandlersignup = async (req, res) => {
     try {
         const { name, email, password } = req.body;  // Destructuring
@@ -9,12 +11,27 @@ const userhandlersignup = async (req, res) => {
             email: email,
             password: password
         });
-
-        return res.render("signup", { message: "Signup Successful!" });
-    } catch (error) {
+        return res.redirect("/login");
+    } catch (error) { 
         console.error(error);
         return res.status(500).send("Internal Server Error");
     }
 };
+    const userloginhandle = async (req, res) => {
+   
+        const {email, password } = req.body;  // Destructuring
 
-module.exports = { userhandlersignup };
+       const user= await  userModel.findOne({email,password})
+       if(!user)
+        return res.render("login",{
+    error:"invalid"
+    })
+    const sessionId=uuidv4();
+    setUser(sessionId,user);
+    res.cookie("uid",sessionId)
+    return res.redirect("/")
+
+};
+
+
+module.exports = { userhandlersignup, userloginhandle };

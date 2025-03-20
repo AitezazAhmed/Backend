@@ -19,9 +19,11 @@
   "description": "",
   "dependencies": {
     "cat-me": "^1.0.3",
+    "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "mongoose": "^8.12.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "uuid": "^11.1.0"
   }
 }
