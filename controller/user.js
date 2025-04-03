@@ -1,6 +1,9 @@
 const userModel = require("../models/user");
 const { setUser } = require("../service/auth");
 const bcrypt = require("bcrypt");
+const express = require('express');
+
+const { restrictToLoggedinUserOnly}=require("../middleware/auth")
 
 const userhandlersignup = async (req, res) => {
     try {
@@ -48,7 +51,7 @@ const userloginhandle = async (req, res) => {
         // Generate JWT or session token
         const token = setUser(user);
         res.cookie("uid", token, { httpOnly: true, secure: true });
-        return res.redirect("/");
+        return res.redirect("/upload");
     } catch (error) {
         console.error(error);
         return res.status(500).send("Internal Server Error");
