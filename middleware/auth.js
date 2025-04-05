@@ -4,12 +4,23 @@ async function restrictToLoggedinUserOnly(req, res, next) {
   const userUid = req.cookies?.uid;
 
   if (!userUid) return res.redirect("/login");
-  const user = getUser(userUid);
+  const user = await getUser(userUid);
 
   if (!user) return res.redirect("/login");
 
   req.user = user;
   next();
+}
+function restrictTo(role) {
+  return (req, res, next) => {
+    if (!req.user) return res.redirect("/login"); // Ensure user is logged in
+
+    if (req.user.role !== role) {
+      return res.status(403).send("Access Denied: You do not have permission.");
+    }
+
+    next();
+  };
 }
 
 // async function checkAuth(req, res, next) {
@@ -23,5 +34,6 @@ async function restrictToLoggedinUserOnly(req, res, next) {
 
 module.exports = {
   restrictToLoggedinUserOnly,
-//   checkAuth,
+  restrictTo
+  // checkAuth,
 };
