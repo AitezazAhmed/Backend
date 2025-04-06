@@ -2,9 +2,6 @@ const userModel = require("../models/user");
 const { setUser } = require("../service/auth");
 const bcrypt = require("bcrypt");
 const express = require('express');
-
-const { restrictToLoggedinUserOnly}=require("../middleware/auth")
-
 const userhandlersignup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -24,7 +21,6 @@ const userhandlersignup = async (req, res) => {
             email: email,
             password: hashedPassword
         });
-
         return res.redirect("/login");
     } catch (error) {
         console.error(error);
