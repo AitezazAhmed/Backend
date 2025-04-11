@@ -1,24 +1,33 @@
 // const sessionIdToUserMap = new Map();   Use for state full 
-const jwt =require("jsonwebtoken");
-const secret= "Aitezaz!@#$%^&*"
+const jwt = require("jsonwebtoken");
+const userModel = require("../models/user"); // Import user model
+require("dotenv").config();
+const SECRET = process.env.secret
 function setUser(user) {
-    // sessionIdToUserMap.set(id, user);  Use for state full 
     return jwt.sign(
         {
-            _id:user.id,
-            email:user.email
+            _id: user._id,  // ✅ Ensure we store `_id`
+            email: user.email
         },
-        secret
-    )
+        SECRET,
+        { expiresIn: "1h" } // Optional: Set token expiration
+    );
 }
 
-function getUser(token) {
-    // return sessionIdToUserMap.get(id);  Use for state full 
-    if(!token) return null
-    return jwt.verify(token,secret)
+async function getUser(token) {
+    if (!token) return null;
+    try {
+        // Decode the JWT token
+        const decoded = jwt.verify(token, SECRET);
+        
+        // Fetch user from MongoDB using `_id`
+        const user = await userModel.findById(decoded._id);
+        
+        return user || null;  // ✅ Return full user object
+    } catch (error) {
+        console.error("JWT Verification Failed:", error);
+        return null;
+    }
 }
 
-module.exports = {
-    setUser,
-    getUser
-};
+module.exports = { setUser, getUser };
